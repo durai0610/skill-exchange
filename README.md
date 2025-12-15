@@ -212,9 +212,3 @@ npm run dev
 
 9. See rating update
 
----
-
-## 👨‍💻 Author
-
-**Durai M**
-**MERN Stack Developer (Fresher)**
