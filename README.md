@@ -212,3 +212,8 @@ npm run dev
 
 9. See rating update
 
+---
+
+##  🔄Note 
+
+The application uses request-based data updates. Some actions may require a page refresh to reflect the latest data. Real-time updates can be implemented in future versions.
