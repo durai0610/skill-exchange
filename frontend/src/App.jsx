@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useAuth } from "./context/AuthContext";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -12,17 +13,22 @@ import Messages from "./pages/Messages";
 import Reviews from "./pages/Reviews";
 
 export default function App() {
-  const token = localStorage.getItem("token");
+  const { token, loading } = useAuth();
+
+  if (loading) return null; // prevents flicker on refresh
 
   return (
     <BrowserRouter>
-      {/* Navbar shown only for authenticated users */}
+      {/* Navbar shown only when logged in */}
       {token && <Navbar />}
 
       <Routes>
         {/* ---------- PUBLIC ROUTES ---------- */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={!token ? <Login /> : <Navigate to="/" />} />
+        <Route
+          path="/register"
+          element={!token ? <Register /> : <Navigate to="/" />}
+        />
 
         {/* ---------- PROTECTED ROUTES ---------- */}
         <Route
@@ -80,10 +86,7 @@ export default function App() {
         />
 
         {/* ---------- FALLBACK ---------- */}
-        <Route
-          path="*"
-          element={<Navigate to={token ? "/" : "/login"} />}
-        />
+        <Route path="*" element={<Navigate to={token ? "/" : "/login"} />} />
       </Routes>
     </BrowserRouter>
   );
